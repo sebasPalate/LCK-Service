@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  username     String         @unique
+  firstname    String
+  lastname     String
+  password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Observations Observations[]
+}
+
+model Pet {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  type          String
+  race          String
+  property      String
+  color         String
+  age           Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  ClinicHistory ClinicHistory[]
+  Appointments  Appointments[]
+}
+
+model ClinicHistory {
+  id        Int      @id @default(autoincrement())
+  pet_id    Int
+  createdAt DateTime @default(now())
+
+  pet          Pet            @relation(fields: [pet_id], references: [id])
+  Observations Observations[]
+}
+
+model Observations {
+  id               Int      @id @default(autoincrement())
+  clinicHistory_id Int
+  medic_id         Int
+  observations     String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  clinicHistory ClinicHistory @relation(fields: [clinicHistory_id], references: [id])
+  user          User          @relation(fields: [medic_id], references: [id])
+}
+
+model Appointments {
+  id     Int      @id @default(autoincrement())
+  pet_id Int
+  date   DateTime
+
+  pet Pet @relation(fields: [pet_id], references: [id])
+}
