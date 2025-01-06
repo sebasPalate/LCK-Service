@@ -1,37 +1,86 @@
-# Sistema Gestor de Historias Clinicas (SGHC)
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LCK-Service
 
-## Getting Started
+Gestor de historias clínicas basado en Next.js con NextUI, Prisma y PostgreSQL.
 
-First, run the development server:
+## Requisitos previos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Asegúrate de tener instalados los siguientes requisitos:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Node.js** (versión 16 o superior)
+- **npm** o **yarn**
+- **PostgreSQL** (Base de Datos)
+- **Prisma CLI** (Para interactuar con la base de datos)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Instalación
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Clona el repositorio en tu máquina local:**
 
-## Learn More
+    ```sh
+    git clone https://github.com/tu-usuario/LCK-Service.git
+    cd LCK-Service
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Instala las dependencias del proyecto:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    Si usas `npm`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```sh
+    npm install
+    ```
 
-## Deploy on Vercel
+    O si usas `yarn`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```sh
+    yarn install
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Configuración de PostgreSQL
+
+1. **Crea la base de datos en PostgreSQL:**
+
+    Asegúrate de tener PostgreSQL instalado y funcionando.
+
+    a. Abre pgAdmin o cualquier cliente PostgreSQL y crea una nueva base de datos llamada `lck_service`.
+
+    b. Si es necesario, crea un nuevo usuario y asegúrate de que tenga todos los privilegios sobre la base de datos `lck_service`.
+
+2. **Configura la conexión a la base de datos:**
+
+    Dirígete a `prisma/schema.prisma` y configura las credenciales de tu base de datos:
+
+    ```prisma
+    datasource db {
+      provider = "postgresql"
+      url      = env("DATABASE_URL")
+    }
+    ```
+
+    Asegúrate de que la variable de entorno `DATABASE_URL` en `.env` esté correctamente configurada con la URL de tu base de datos PostgreSQL.
+
+3. **Realiza las migraciones:**
+
+    Aplica las migraciones de la base de datos:
+
+    ```sh
+    npx prisma migrate dev
+    ```
+
+## Ejecución
+
+1. **Inicia el servidor de desarrollo:**
+
+    ```sh
+    npm run dev
+    ```
+
+2. **Accede a la aplicación:**
+
+    Abre tu navegador y visita `http://localhost:3000/` para ver la aplicación en funcionamiento.
+
+## Archivos Importantes
+
+- **`prisma/schema.prisma`:** Configuración de la base de datos y modelos de Prisma.
+- **`pages/api/auth/[...nextauth].ts`:** Configuración de NextAuth para autenticación.
+- **`components`:** Contiene los componentes UI de NextUI utilizados para gestionar las historias clínicas.
+- **`lib/prisma.ts`:** Configuración para interactuar con Prisma.
+- **`pages`:** Contiene las rutas principales de la aplicación, incluyendo la gestión de historias clínicas.
